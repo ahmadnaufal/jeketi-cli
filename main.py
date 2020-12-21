@@ -8,6 +8,7 @@ import re
 base_url = "https://jkt48.com/"
 theater_path = "theater/schedule?lang=id"
 img_path = "/images/"
+apply_url = "https://www.jkt48.com/event/apply/id/305/type/2"
 
 img_teamj = "icon.team1.png"
 img_teamk = "icon.team2.png"
