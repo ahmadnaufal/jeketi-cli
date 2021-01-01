@@ -26,11 +26,14 @@ def parse_schedule(raw_tags):
     ticket_time = datetime.strptime(columns[0].contents[-1].contents[2][-5:], "%H:%M")
 
     # create schedule for purchase time
-    time_vip = PurchasePeriod.create_from_period_string("VIP", raw_tags[0].findAll('td')[3].getText())
-    time_ofc = PurchasePeriod.create_from_period_string("OFC", raw_tags[1].findAll('td')[1].getText())
-    time_gen = PurchasePeriod.create_from_period_string("General", raw_tags[2].findAll('td')[1].getText())
+    periods = [
+        ("VIP", raw_tags[0].findAll('td')[3].getText()),
+        ("OFC", raw_tags[1].findAll('td')[1].getText()),
+        ("GEN", raw_tags[2].findAll('td')[1].getText())
+    ]
+    purchase_times = [PurchasePeriod.create_from_period_string(title, period_text) for title, period_text in periods if period_text != ' - ']
 
-    return Theater(title, date, show_time, ticket_time, [time_vip, time_ofc, time_gen])
+    return Theater(title, date, show_time, ticket_time, purchase_times)
 
 def parse_content(choice):
     sch = []
