@@ -20,20 +20,25 @@ team_name = ["Academy Class A", "Team J", "Team KIII", "Team T", "Himawarigumi"]
 
 def parse_schedule(raw_tags):
     columns = raw_tags[0].findAll('td')
-    title = str(columns[1].text)
-    date = datetime.strptime(columns[0].contents[2], "%d.%m.%Y").date()
-    show_time = datetime.strptime(columns[0].contents[-1].contents[0][-5:], "%H:%M")
-    ticket_time = datetime.strptime(columns[0].contents[-1].contents[2][-5:], "%H:%M")
+    show_title = columns[1].text
+    date_str = columns[0].contents[2]
+    show_time = datetime.strptime(date_str + " " + columns[0].contents[-1].contents[0][-5:], "%d.%m.%Y %H:%M")
+    ticket_time = datetime.strptime(date_str + " " + columns[0].contents[-1].contents[2][-5:], "%d.%m.%Y %H:%M")
 
     # create schedule for purchase time
     periods = [
-        ("VIP", raw_tags[0].findAll('td')[3].getText()),
-        ("OFC", raw_tags[1].findAll('td')[1].getText()),
-        ("GEN", raw_tags[2].findAll('td')[1].getText())
+        ("VIP", raw_tags[0].findAll('td')[3]),
+        ("OFC", raw_tags[1].findAll('td')[1]),
+        ("GEN", raw_tags[2].findAll('td')[1])
     ]
-    purchase_times = [PurchasePeriod.create_from_period_string(title, period_text) for title, period_text in periods if period_text != ' - ']
+    purchase_times = []
+    for title, period_tag in periods:
+        period_text = period_tag.getText()
+        if period_text != ' - ':
+            purchase_link = period_tag.find('a').get('href') if period_tag.find('a') != None else ""
+            purchase_times.append(PurchasePeriod.create_from_period_string(title, period_text, purchase_link))
 
-    return Theater(title, date, show_time, ticket_time, purchase_times)
+    return Theater(show_title, show_time, ticket_time, purchase_times)
 
 def parse_content(choice):
     sch = []
