@@ -8,7 +8,10 @@ import re
 base_url = "https://jkt48.com/"
 theater_path = "theater/schedule?lang=id"
 img_path = "/images/"
-apply_url = "https://www.jkt48.com/event/apply/id/305/type/2"
+apply_url = "https://jkt48.com/ticket/apply/id/2225/type/2"
+show_post_url = "https://jkt48.com/ticket/apply/id/2225/type/2/show/1?lang=id" # POST data = "payment_method=4&attribute=1&agree=1"
+confirmation_url = "https://jkt48.com/ticket/apply-conf/id/2225/type/2/show/1?lang=id"
+comp_url = "https://jkt48.com/ticket/apply-comp/" # POST data = "id=2225&type=2&show=1&btnSubmit.x=100&btnSubmit.y=13"
 
 img_teamj = "icon.team1.png"
 img_teamk = "icon.team2.png"
